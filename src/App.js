@@ -14,7 +14,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login ip={ipAddr}/>}/>
+        <Route path="/" element={<LoginPage ip={ipAddr}/>}/>
         <Route path="/student/:id" element={<StudentPage ip={ipAddr}/>}/>
         <Route path="/Students" element={<AllStudents ip={ipAddr}/>}/>
         <Route path="/Enrollments" element={<EnrollmentPage ip={ipAddr}/>}/>
