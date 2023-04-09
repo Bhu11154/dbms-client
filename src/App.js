@@ -7,7 +7,6 @@ import CoursesPage from './pages/CoursesPage';
 import DeptPage from './pages/Departments';
 import RegisterPage from './pages/Register';
 import LoginPage from './pages/Login';
-import 'semantic-ui-css/semantic.min.css'
 
 const ipAddr = 'https://dbms-server-backend-2.onrender.com';
 
