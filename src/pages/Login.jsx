@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+// import { Button, Checkbox, Form } from 'semantic-ui-react'
 import NavButton from "../components/NavButton";
 import axios from "axios";
 
@@ -34,7 +34,7 @@ const LoginPage = ({ip}) =>{
 
     return (
       <>
-      <NavButton name={'Register'} pos={70} top={8} posi={'left'}/>
+      {/* <NavButton name={'Register'} pos={70} top={8} posi={'left'}/>
         <h1 style={{marginLeft:"45%", marginTop: "50px"}}>Login</h1>
         <Form style={{width: "400px", marginLeft: "35%"}} onSubmit={async (e) => {
             e.preventDefault();
@@ -70,8 +70,8 @@ const LoginPage = ({ip}) =>{
                 <input placeholder='AdminKey' type="password" onChange={(e) => setAdmin(e.target.value)}/>
             </Form.Field>
             <Button positive onClick={(e)=>e.target.innerHTML = 'Confirm'}>Login</Button>
-         </Form>
-
+         </Form> */}
+        <div>Semantic ui sucks... login page</div>
       </>
     );
   }
