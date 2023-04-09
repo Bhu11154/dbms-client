@@ -71,7 +71,6 @@ const LoginPage = ({ip}) =>{
             </Form.Field>
             <Button positive onClick={(e)=>e.target.innerHTML = 'Confirm'}>Login</Button>
          </Form>
-        <div>Semantic ui sucks... login</div>
       </>
     );
   }
