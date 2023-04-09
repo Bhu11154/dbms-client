@@ -14,14 +14,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<Homepage ip={ipAddr}/>}/>
+        <Route path="/" element={<Login ip={ipAddr}/>}/>
         <Route path="/student/:id" element={<StudentPage ip={ipAddr}/>}/>
         <Route path="/Students" element={<AllStudents ip={ipAddr}/>}/>
         <Route path="/Enrollments" element={<EnrollmentPage ip={ipAddr}/>}/>
         <Route path="/Courses" element={<CoursesPage ip={ipAddr}/>}/>
         <Route path="/Departments" element={<DeptPage ip={ipAddr}/>}/>
         <Route path="/Register" element={<RegisterPage ip={ipAddr}/>}/>
-        <Route exact path="/Login" element={<LoginPage ip={ipAddr}/>}/>
+        <Route path="/Login" element={<LoginPage ip={ipAddr}/>}/>
       </Routes>
     </BrowserRouter>
   );
