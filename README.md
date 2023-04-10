@@ -1,6 +1,6 @@
 # Rangoju Bhuvan , 20MA20048, DBMS-ERP Client
 
-### `I have hosted my website live here on: https://bhuvan-erp.onrender.com/`
+### `I have hosted my website live here on:` https://bhuvan-erp.onrender.com/
 
 ### `My Architecture:`
 1. FrontEnd is build on React.js, which is a javascript framework.
