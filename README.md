@@ -11,7 +11,7 @@
 1. Install Node.js in your computer if not already.
 2. Create a new folder on your PC and open a new terminal on this location.
 3. Run the following commands:
-a) git clone https://github.com/Bhu11154/dbms-client.git
-b) cd dbms-client
-c) npm install
-d) npm start
+*git clone https://github.com/Bhu11154/dbms-client.git
+*cd dbms-client
+*npm install
+*npm start
