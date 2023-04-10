@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Input, Divider, Form, Label, Button } from 'semantic-ui-react'
+import { Table, Input, Button, Dimmer, Loader } from 'semantic-ui-react'
 import BackButton from "../components/BackButton";
 import LogoutBtn from "../components/LogoutBtn";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ const EnrollmentPage = ({ip}) =>{
   const [courseId, setCourseId] = useState('');
   const [id, setId] = useState('');
   const navigate = useNavigate();
+  const [isEmpty, setIsEmpty] = useState(true);
   const insertEnrollment = async () => {
     try{
         const res = await axios.post(`${ip}/insertEnrollment`, {
@@ -24,10 +25,18 @@ const EnrollmentPage = ({ip}) =>{
     }catch(err){
       console.log(err);
     }
+    if(id !== '' && courseId !== '' && studentId !== ''){
+      setIsEmpty(true);
+      window.location.reload();
+    }
+    setCourseId('');
+    setStudentId('');
+    setId('');
   }
   const fetchEnrollments = async () => {
     try{
-        const res = await axios.get(`http://${ip}/getEnrollmentDetails/`)
+        const res = await axios.get(`${ip}/getEnrollmentDetails/`)
+        setIsEmpty(res.data.length === 0);
         setEnrollments(res.data);
     }catch(err){
         console.log(err);
@@ -46,7 +55,7 @@ const EnrollmentPage = ({ip}) =>{
         <LogoutBtn/>
           <h1 style={{marginLeft:"43%", marginTop: "30px"}}>Enrollments</h1>
           {isAdmin && 
-            <form action="submit" onSubmit={async (e) => {e.preventDefault(); insertEnrollment(); window.location.reload();}} style={{marginTop: "20px", justifyContent: "center", marginLeft:"25%"}}>
+            <form action="submit" onSubmit={async (e) => {e.preventDefault(); insertEnrollment();}} style={{marginTop: "20px", justifyContent: "center", marginLeft:"25%"}}>
               <Input focus placeholder='Enroll ID' onChange={(e) => setId(e.target.value)} style={{paddingRight: "20px"}}/>
               <Input focus placeholder='Student ID' onChange={(e) => setStudentId(e.target.value)} style={{paddingRight: "20px"}}/>
               <Input focus placeholder='Course ID' onChange={(e) => setCourseId(e.target.value)} style={{paddingRight: "20px"}}/>
@@ -63,6 +72,11 @@ const EnrollmentPage = ({ip}) =>{
           </Table.Row>
         </Table.Header>
         <Table.Body>
+        {isEmpty && 
+            <Dimmer active>
+              <Loader />
+            </Dimmer>
+        }
           {enrollments.length > 0 && enrollments.map((enrollment) => {
             return(
               <Table.Row>

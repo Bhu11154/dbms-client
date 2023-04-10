@@ -35,8 +35,8 @@ const LoginPage = ({ip}) =>{
     return (
       <>
       <NavButton name={'Register'} pos={70} top={8} posi={'left'}/>
-        <h1 style={{marginLeft:"45%", marginTop: "50px"}}>Login</h1>
-        <Form style={{width: "400px", marginLeft: "35%"}} onSubmit={async (e) => {
+        <h1 style={{marginLeft:"45%", marginTop: "50px", marginBottom:"50px"}}>Login</h1>
+        <Form style={{width: "300px", margin:'auto'}} onSubmit={async (e) => {
             e.preventDefault();
             checkAuthentication();
             if(admin === adminkey){

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Table, Input, Button } from 'semantic-ui-react'
+import { Table, Input, Button, Dimmer, Loader } from 'semantic-ui-react'
 import BackButton from "../components/BackButton";
 import LogoutBtn from "../components/LogoutBtn";
 var isAdmin = '0';
@@ -12,6 +12,7 @@ const CoursesPage = ({ip}) =>{
   const [dept, setDept] = useState('');
   const [id, setId] = useState('');
   const navigate = useNavigate();
+  const [isEmpty, setIsEmpty] = useState(true);
   const insertCourse = async () => {
     try{
         const res = await axios.post(`${ip}/insertCourse`, {
@@ -22,10 +23,18 @@ const CoursesPage = ({ip}) =>{
     }catch(err){
       console.log(err);
     }
+    if(id !== '' && name !== '' && dept !== ''){
+      setIsEmpty(true);
+      window.location.reload();
+    }
+    setName('');
+    setDept('');
+    setId('');
   }
   const fetchCourses = async () => {
     try{
         const res = await axios.get(`${ip}/showCourses/`)
+        setIsEmpty(res.data.length === 0);
         setCourses(res.data);
     }catch(err){
         console.log(err);
@@ -44,7 +53,7 @@ const CoursesPage = ({ip}) =>{
         <LogoutBtn/>
         <h1 style={{marginLeft:"43%", marginTop: "50px"}}>Courses</h1>
         {isAdmin && 
-          <form action="submit" onSubmit={async (e) => {e.preventDefault(); insertCourse(); window.location.reload();}} style={{marginTop: "20px", justifyContent: "center", marginLeft:"25%"}}>
+          <form action="submit" onSubmit={async (e) => {e.preventDefault(); insertCourse(); }} style={{marginTop: "20px", justifyContent: "center", marginLeft:"25%"}}>
             <Input focus placeholder='Course ID' onChange={(e) => setId(e.target.value)} style={{paddingRight: "20px"}}/>
             <Input focus placeholder='Name' onChange={(e) => setName(e.target.value)} style={{paddingRight: "20px"}}/>
             <Input focus placeholder='Department' onChange={(e) => setDept(e.target.value)} style={{paddingRight: "20px"}}/>
@@ -60,6 +69,11 @@ const CoursesPage = ({ip}) =>{
           </Table.Row>
         </Table.Header>
         <Table.Body>
+        {isEmpty && 
+            <Dimmer active>
+              <Loader />
+            </Dimmer>
+        }
         {courses.length>0 && courses.map((course) => {
           return(
             <>

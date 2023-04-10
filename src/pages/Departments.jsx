@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Table, Input, Divider, Form, Label, Button } from 'semantic-ui-react'
+import { Table, Input,Dimmer, Loader, Button } from 'semantic-ui-react'
 import BackButton from "../components/BackButton";
 import LogoutBtn from "../components/LogoutBtn";
 
@@ -12,6 +12,7 @@ const DeptPage = ({ip}) =>{
   const [hod, sethod] = useState('');
   const [id, setId] = useState('');
   const navigate = useNavigate();
+  const [isEmpty, setIsEmpty] = useState(true);
   const insertDept = async () => {
     try{
         const res = await axios.post(`${ip}/insertDept`, {
@@ -22,10 +23,18 @@ const DeptPage = ({ip}) =>{
     }catch(err){
       console.log(err);
     }
+    if(id !== '' && name !== '' && hod !== ''){
+      setIsEmpty(true);
+      window.location.reload();
+    }
+    setName('');
+    sethod('');
+    setId('');
   }
   const fecthDepts = async () => {
     try{
         const res = await axios.get(`${ip}/showDepts/`)
+        setIsEmpty(res.data.length === 0);
         setDepts(res.data);
     }catch(err){
         console.log(err);
@@ -44,11 +53,11 @@ const DeptPage = ({ip}) =>{
       <LogoutBtn/>
          <h1 style={{marginLeft:"43%", marginTop: "50px"}}>Departments</h1>
          {isAdmin && 
-          <form action="submit" onSubmit={async (e) => {e.preventDefault(); insertDept(); window.location.reload();}} style={{marginTop: "20px", justifyContent: "center", marginLeft:"25%"}}>
+          <form action="submit" onSubmit={async (e) => {e.preventDefault(); insertDept(); }} style={{marginTop: "20px", justifyContent: "center", marginLeft:"25%"}}>
             <Input focus placeholder='Dept. ID' onChange={(e) => setId(e.target.value)} style={{paddingRight: "20px"}}/>
             <Input focus placeholder='Name' onChange={(e) => setName(e.target.value)} style={{paddingRight: "20px"}}/>
             <Input focus placeholder='HOD' onChange={(e) => sethod(e.target.value)} style={{paddingRight: "20px"}}/>
-            <Button content='Add' primary />
+            <Button content='Add' primary/>
           </form>
         }
         <Table inverted selectable style={{width: "50%", marginLeft: "25%"}}>
@@ -60,6 +69,11 @@ const DeptPage = ({ip}) =>{
           </Table.Row>
         </Table.Header>
         <Table.Body>
+        {isEmpty && 
+            <Dimmer active>
+              <Loader />
+            </Dimmer>
+        }
         {depts.length>0 && depts.map((dept) => {
           return(
             <>

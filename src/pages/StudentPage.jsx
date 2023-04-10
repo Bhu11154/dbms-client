@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {useParams, useNavigate} from 'react-router-dom'
 import axios from "axios";
-import { Table, Input, Icon, Button } from 'semantic-ui-react'
+import { Table, Input, Button, Dimmer, Loader } from 'semantic-ui-react'
 import BackButton from "../components/BackButton";
 import NavButton from "../components/NavButton";
 import LogoutBtn from "../components/LogoutBtn";
@@ -13,12 +13,15 @@ const StudentPage = ({ip}) =>{
   const [Grade, setGrade] = useState('');
   const {id} = useParams();
   const navigate = useNavigate();
+  const [isEmpty, setIsEmpty] = useState(true);
   const editGrade = async (id,grade) =>{
     try{
       const res = await axios.put(`${ip}/editGrade/${id}/${grade}`);
     }catch(err){
       console.log(err);
     }
+    setIsEmpty(true);
+    window.location.reload();
   }
     useEffect(()=>{
         isAdmin = localStorage.getItem('admin') === '1';
@@ -41,6 +44,7 @@ const StudentPage = ({ip}) =>{
         const fetchStudentInfo = async () =>{
           try{
             const res = await axios.get(`${ip}/student/${id}`)
+            setIsEmpty(res.data.length === 0 || res.data[0] === {});
             setStudent(res.data[0]);
           }catch(err){
               console.log(err);
@@ -50,7 +54,7 @@ const StudentPage = ({ip}) =>{
         fetchCourses();
     },[])
     return (
-      <>
+      <div>
         <BackButton/>
         <LogoutBtn />
         <h1 style={{marginLeft:"43%", marginTop: "50px"}}>Student Info</h1>
@@ -64,7 +68,12 @@ const StudentPage = ({ip}) =>{
             </Table.Row>
           </Table.Header>
 
-            <Table.Body>
+            <Table.Body>{isEmpty && 
+                          <Dimmer active>
+                            <Loader />
+                          </Dimmer>
+                      }
+
               <Table.Row>
                 <Table.Cell>Name</Table.Cell>
                 <Table.Cell>{student.name}</Table.Cell>
@@ -100,7 +109,7 @@ const StudentPage = ({ip}) =>{
 
         <h1 style={{marginLeft:"40%", marginTop: "50px"}}>Courses Enrolled: </h1>
         <NavButton name={'Enrollments'} pos={18} top={57}/>
-        <Table celled inverted selectable style={{width: "30%", marginLeft: "35%"}}>
+        <Table celled inverted selectable style={{width: "30%", marginLeft: "35%"}} color='teal' key='teal'>
         <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Course</Table.HeaderCell>
@@ -117,7 +126,7 @@ const StudentPage = ({ip}) =>{
                     {isAdmin && 
                       <form onSubmit={(e)=> e.preventDefault()} style={{display: "flex", justifyContent: "space-around"}}>
                         <Input placeholder={course.grade} onChange={(e)=> setGrade(e.target.value)} style={{width:"50px"}}/>
-                        <Button primary onClick={() =>{if(Grade !== '') {editGrade(course.id, Grade); window.location.reload();}}}>
+                        <Button primary onClick={() =>{if(Grade !== '') {editGrade(course.id, Grade); }}}>
                           Edit
                         </Button>
                       </form>
@@ -130,7 +139,7 @@ const StudentPage = ({ip}) =>{
             })}
         </Table.Body>
         </Table>
-      </>
+      </div>
     );
   }
   

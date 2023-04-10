@@ -6,7 +6,7 @@ const NavButton = ({name, pos, top, posi="right"}) =>{
     return (
       <>
         <Button labelPosition={posi} icon={posi + " chevron"} content={name} onClick={() => navigate(`/${name}`)}
-        style={{position: "absolute", right:`${pos}%` , top: `${top}%`}}/>
+        style={{position: "absolute", right:`${pos}%` , marginTop: `${top}px`}}/>
       </>
     );
   }

@@ -16,7 +16,7 @@ const StudentCard = ({obj, ip}) =>{
       }
     };
     fetchCourses();
-  },[])
+  })
   
     return (
       <Table.Row  style={{cursor: "pointer"}} onClick={() => navigate(`/student/${obj.id}`)}>
